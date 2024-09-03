@@ -9,25 +9,24 @@ const bycrpt= require('bcryptjs');
 //@access public
 const signupController = asyncHandler(async (req, res) => {
     // const { username, password, confirmpassword, email, fullname, gender } = req.body;
-  
 
  // Sanitize user inputs
  const username = sanitizeInput(req.body.username);
  const password = req.body.password;
  const confirmpassword = req.body.confirmpassword;
- const email = sanitizeInput(req.body.email);
+//  const email = sanitizeInput(req.body.email)||null;
  const fullname = sanitizeInput(req.body.fullname);
  const gender = req.body.gender;
 
 
  // Validate username length (minimum 6 characters)
- if (username.length < 6) {
+ if (username.length < 5) {
     res.status(400);
     throw new Error("Username must be at least 6 characters long");
 }
 
 // Validate password length (minimum 8 characters)
-if (password.length < 8) {
+if (password.length < 4) {
     res.status(400);
     throw new Error("Password must be at least 8 characters long");
 }
@@ -40,7 +39,8 @@ if (password.length < 8) {
     }
   
     // Check if the user already exists
-    const user = await User.findOne({ $or: [{ username }, { email }] });
+    // const user = await User.findOne({ $or: [{ username }, { email }] });
+    const user = await User.findOne({ username: username });
   
     if (user) {
       return res.status(400).json({ error: "Username or email already exists" });
@@ -49,44 +49,77 @@ if (password.length < 8) {
     // Hash password
     const hashedPassword = await hashpasword(password);
   
-    console.log("hash");
     // Set profile picture URL based on gender
     const boyProfilePic = `https://avatar.iran.liara.run/public/boy?username=${username}`;
     const girlProfilePic = `https://avatar.iran.liara.run/public/girl?username=${username}`;
     const profilePic = gender === "male" ? boyProfilePic : girlProfilePic;
-  
+    
+    // console.log("hash");
     // Create new user
     const newUser = new User({
       username,
       password: hashedPassword,
-      email,
       fullname,
       gender,
       profilepic: profilePic
     });
   
-    console.log("New user created");
-    
-    // Send response
-    if(newUser){
-        //jwt token
-        generatetokenandSetcookie(newUser._id,res);
+
+    try {
+        // Save the user
         await newUser.save();
-        const fname=await decodeInput(newUser.fullname);
-        const uname=await decodeInput(newUser.username);
+        
+        // Generate JWT token and set cookie
+        generatetokenandSetcookie(newUser._id, res);
+    
+        // Decode the inputs (if necessary)
+        const fname = await decodeInput(newUser.fullname);
+        const uname = await decodeInput(newUser.username);
+    
+        // Send the response
         res.status(201).json({
           _id: newUser._id,
-          fullname:fname,
-          username:uname,
+          fullname: fname,
+          username: uname,
           profilepic: newUser.profilepic,
         });
-    }
+    
+        console.log("New user created");
+    
+      } catch (error) {
+        console.error("Error saving the user:", error);
+        res.status(500);
+        throw new Error("User not created");
+      }
+
+
+
+    // console.log(newUser);   
+    // // Send response
+    // if(newUser){
+    //     //jwt token
+    //     generatetokenandSetcookie(newUser._id,res);
+    //     await newUser.save();
+    //     // console.log('1');
+    //     const fname=await decodeInput(newUser.fullname);
+    //     const uname=await decodeInput(newUser.username);
+    //     res.status(201).json({
+    //         _id: newUser._id,
+    //         fullname:fname,
+    //         username:uname,
+    //         profilepic: newUser.profilepic,
+    //     });
+    //     console.log("New user created");
+    // }
+    //  console.log("some error");
+    // res.status(500)
+    // throw new Error("user not created");
   });
   
   const loginController = asyncHandler(async (req, res) => {
     // Destructure username and password from the request body
     const { username, password } = req.body;
-
+    console.log(req.body);
     // Find the user by username in the database
     const user = await User.findOne({ username });
 

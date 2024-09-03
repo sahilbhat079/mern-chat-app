@@ -1,23 +1,37 @@
-import React from 'react'
+import React from 'react';
+import useConversation from '../strore/useConversation';
 
-export default function Conversation() {
-  return (<>
-      <div className=' flex gap-2 items-center hover:bg-sky-400 p-2 py-1 cursor-pointer'>
-          <div className="avatar online">
-              <div className="w-14 rounded-full">
-                  <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-              </div>
+export default function Conversation({conversation,lastindex, emoji }) {
+//  console.log("conversation:",typeof(conversation),conversation);
+
+  const {selectedConversation,setselectedconversation} = useConversation();
+
+  const isSelected = selectedConversation?._id === conversation._id;
+  // const isselected = selectedConversation?._id.toString() === conversation._id.toString();
+   
+  // console.log(selectedConversation._id===conversation._id);
+  return (
+    <>
+      <div 
+      className={`flex gap-2 items-center hover:bg-sky-400 p-2 py-1 cursor-pointer
+        ${isSelected ? "bg-sky-500":" "}`}
+
+        onClick={() => setselectedconversation(conversation) }
+        >
+        <div className="avatar online">
+          <div className="w-14 rounded-full">
+            <img src={conversation.profilepic} alt={`${conversation.fullname}'s profile`} />
           </div>
+        </div>
 
-          <div className='flex flex-col flex-1'>
-              <div className='flex gap-3 justify-between'>
-                  <p className='font-bold text-gray-200'>jhon doe </p>
-                  <span className='text-xl'>😈</span>
-              </div>
+        <div className='flex flex-col flex-1'>
+          <div className='flex gap-3 justify-between'>
+            <p className='font-bold text-gray-200'>{conversation.fullname}</p>
+            <span className='text-xl'>{emoji}</span>
           </div>
-
+        </div>
       </div>
-      <div className='divider my-0 h-1 py-0'></div>
-  </>
-  )
+      {lastindex && <div className='divider my-0 h-1 py-0'></div>}
+    </>
+  );
 }

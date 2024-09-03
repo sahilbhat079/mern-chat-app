@@ -4,38 +4,43 @@ const Message = require("../models/message.model");
 
 const sendmessage = expressAsyncHandler(async (req, res) => {
     try {
-        console.log("working");
-        const { message } = req.body;
-        const { id:ReceiverID } = req.params;
-        const SenderID = req.user._id;
-        // console.log(SenderId);
-        // console.log(ReceiverId);
+      // console.log("working");
+      let { message } = req.body;
+      if (typeof message === "object" && message.text) {
+        message = message.text;
+      }
+      const { id: ReceiverID } = req.params;
+      const SenderID = req.user._id;
+      // console.log(SenderId);
+      // console.log(ReceiverId);
+      // console.log(typeof(message));
+      // console.log(message);
+      //  message=message.text;
 
-        let convo = await Conversation.findOne({
-            participants: { $all: [SenderID,ReceiverID] },
+      let convo = await Conversation.findOne({
+        participants: { $all: [SenderID, ReceiverID] },
+      });
+
+      if (!convo) {
+        convo = await Conversation.create({
+          participants: [SenderID, ReceiverID],
         });
-        
-        if (!convo) {
-            convo = await Conversation.create({
-                participants: [SenderID, ReceiverID]},
-            );
-        }
-        const newmesage = new Message({
-            SenderID,
-            ReceiverID,
-            message,
-        });
-        
-        console.log("working meassga");
+      }
+      const newmesage = new Message({
+        SenderID,
+        ReceiverID,
+        message,
+      });
 
-        if (newmesage) {
-            convo.message.push(newmesage._id)
-        }
-        // await newmesage.save();
-        // await convo.save();
-        await Promise.all([newmesage.save(),convo.save()])
-        res.status(200).json({ newmesage });
+      console.log("working meassga");
 
+      if (newmesage) {
+        convo.message.push(newmesage._id);
+      }
+      // await newmesage.save();
+      // await convo.save();
+      await Promise.all([newmesage.save(), convo.save()]);
+      res.status(200).json({ newmesage });
     } catch (error) {
         res.status(500);
         console.log(error);
