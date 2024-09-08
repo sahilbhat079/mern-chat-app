@@ -6,8 +6,7 @@ import getRandomEmoji from '../utility/getemojis';
 export default function Conversations() {
   const {loading,conversation}  = useGetConversation();    
   const allUsers = conversation?.allUsers || []; 
-  // console.log("user:",conversation);
-  // console.log();
+;
 
   return (
     <div className='py-2 flex flex-col overflow-auto'>

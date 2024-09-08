@@ -1,6 +1,6 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { useAuthHook } from "../context/authcontext"; // Custom hook for accessing Auth context
+import { useAuthHook } from "../context/Authcontext"; // Custom hook for accessing Auth context
 
 const useSignup = () => {
   const [loading, setLoading] = useState(false); // State for managing loading status

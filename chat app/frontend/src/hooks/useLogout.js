@@ -1,6 +1,6 @@
 import { useState } from "react";
 import toast from "react-hot-toast"; // Import toast for notifications
-import { useAuthHook } from "../context/authcontext";
+import { useAuthHook } from "../context/Authcontext";
 
 // Custom hook for handling logout functionality
 const useLogout = () => {

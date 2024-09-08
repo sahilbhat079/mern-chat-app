@@ -8,7 +8,7 @@ import useConversation from "../strore/useConversation";
 const useGetMessages=()=>{
     const [loading ,setloading]=useState(false);
     const { messages,setmessages,selectedConversation}=useConversation();
-// console.log(messages);
+
 useEffect(() => {  
 const getMessage=async()=>{
     setloading(true);
@@ -26,7 +26,7 @@ const data = await res.json();
       }
     finally{
         setloading(false);
-        // console.log(messages);
+       
     }
 } 
 
