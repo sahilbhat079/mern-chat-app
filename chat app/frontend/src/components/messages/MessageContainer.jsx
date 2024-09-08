@@ -16,7 +16,7 @@ export default function MessageContainer(){
     }, [setselectedconversation]);
 
     return (
-        <div className='md:min-w-[450px] flex flex-col'>
+        <div className='md:min-w-[350px] flex flex-col'>
 
             {!selectedConversation ? (<Nochat />) : (
                 <>

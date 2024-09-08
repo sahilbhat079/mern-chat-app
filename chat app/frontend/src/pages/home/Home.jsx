@@ -5,8 +5,7 @@ import Nochat from '../../components/messages/Nochat'
 
 function Home() {
   return (
-    <div className='flex sm:h-[450px] md:h-[550px]  bg-gray-200 rounded-lg overflow-hidden bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 border border-gray-100
-
+    <div className='flex flex-col sm:flex-row sm:h-[350px] md:h-[450px] bg-gray-200 rounded-lg overflow-hidden bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 border border-gray-100
 '>
       <Sidebar></Sidebar>
       <MessageContainer></MessageContainer>
