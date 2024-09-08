@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "main": "Server.js",
   "scripts": {
-    "start": "nodemon backend/Server.js"
+    "server": "nodemon backend/Server.js",
+    "start":"node  backend/Server.js ",
+    "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend"
+
   },
   "keywords": [],
   "author": "",
