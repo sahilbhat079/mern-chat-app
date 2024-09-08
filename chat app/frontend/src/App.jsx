@@ -4,7 +4,7 @@ import Home from './pages/home/Home'
 import Login from './pages/login/Login'
 import Signup from './pages/signup/Signup'
 import { Routes,Route, Navigate } from 'react-router-dom'
-import {useAuthHook } from './context/authcontext'
+import {useAuthHook } from './context/Authcontext'
 
 function App() {
   const {Authuser}=useAuthHook();

@@ -15,6 +15,7 @@ export const AuthContextProvider = ({ children }) => {
         const user = localStorage.getItem("chat-user");
         return user ? JSON.parse(user) : null;
     });
+    // console.log(user);
 
     return <AuthContext.Provider value={{ Authuser, setAuthuser }}>
             {children}

@@ -8,10 +8,10 @@ export default defineConfig({
     port: 5000,
     proxy: {
       '/api': {
-        target: 'http://localhost:3001', // Replace with your API server URL
+        target: 'http://127.0.0.1:3001',  // Ensure this matches your backend
         changeOrigin: true,
-        secure: false,
-        ws: true,
+        // secure: false,
+        // ws: true,
     },
   }
 }});

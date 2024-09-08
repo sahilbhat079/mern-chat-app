@@ -6,7 +6,7 @@ const useConversation = create((set) => ({
   messages:[],
   setmessages:(messages)=>set({messages})
  
-}))
+}));
 
 
 export default useConversation;

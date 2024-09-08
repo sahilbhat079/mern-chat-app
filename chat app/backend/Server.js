@@ -13,10 +13,11 @@ const Usersroute=require('./routes/Users.route');
 
 
 const connectiondb=require('./db/connection');
+const { app, server } = require('./socket/socket');
 
 
 const port = process.env.PORT || 3000
-const app = express()
+// const app = express()
 
 // app.use(helmet());
 // app.disable('x-powered-by');
@@ -35,7 +36,7 @@ app.use(errorhandler);
 
 
 
-app.listen(port,()=>{
+server.listen(port,()=>{
     connectiondb();
     console.log(`server is runining on port ${port}`)
 })

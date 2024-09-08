@@ -1,6 +1,7 @@
 const expressAsyncHandler = require("express-async-handler");
 const Conversation = require("../models/conversation.model");
 const Message = require("../models/message.model");
+const {getReceiverSockectid,io}=require('../socket/socket.js');
 
 const sendmessage = expressAsyncHandler(async (req, res) => {
     try {
@@ -32,17 +33,29 @@ const sendmessage = expressAsyncHandler(async (req, res) => {
         message,
       });
 
-      console.log("working meassga");
+      // console.log("working meassga");
 
       if (newmesage) {
         convo.message.push(newmesage._id);
       }
       // await newmesage.save();
       // await convo.save();
-      await Promise.all([newmesage.save(), convo.save()]);
+      await Promise.all([convo.save(),newmesage.save()]);
+
+    // Socket io function;
+   const socketReceiverID=await getReceiverSockectid(ReceiverID);
+  //  console.log("the reseceiver id is ",ReceiverID,socketReceiverID);
+    
+    if(socketReceiverID){
+      io.to(socketReceiverID).emit('newmesage',newmesage);  
+    }
+    // console.log(newmesage); 
+
+     
+
       res.status(200).json({ newmesage });
     } catch (error) {
-        res.status(500);
+        res.status(500);ru
         console.log(error);
         throw new Error(error);
 

@@ -1,15 +1,18 @@
 import React from 'react';
 import useConversation from '../strore/useConversation';
+import { useSocketcontect } from '../context/Socketcontext';
 
 export default function Conversation({conversation,lastindex, emoji }) {
-//  console.log("conversation:",typeof(conversation),conversation);
+
 
   const {selectedConversation,setselectedconversation} = useConversation();
 
   const isSelected = selectedConversation?._id === conversation._id;
   // const isselected = selectedConversation?._id.toString() === conversation._id.toString();
    
-  // console.log(selectedConversation._id===conversation._id);
+ const {onlineUsers}=useSocketcontect();
+ const isonline=onlineUsers.includes(conversation._id);
+  
   return (
     <>
       <div 
@@ -18,7 +21,7 @@ export default function Conversation({conversation,lastindex, emoji }) {
 
         onClick={() => setselectedconversation(conversation) }
         >
-        <div className="avatar online">
+        <div className={`avatar ${isonline?"online":""}`}>
           <div className="w-14 rounded-full">
             <img src={conversation.profilepic} alt={`${conversation.fullname}'s profile`} />
           </div>
